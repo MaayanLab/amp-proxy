@@ -1,0 +1,5 @@
+#! /bin/sh
+
+/usr/local/bin/haproxy-dns-config.py -u maayanlab -p systemsbiology http://$MARATHON_MASTER:8080 > /etc/haproxy/haproxy.cfg
+
+/usr/local/sbin/haproxy -db -f /etc/haproxy/haproxy.cfg
