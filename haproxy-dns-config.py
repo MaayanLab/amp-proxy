@@ -93,6 +93,7 @@ frontend = ''
 backend = ''
 listen = ''
 finishedApps = []
+legacyBackend = ''
 for task in tasks:
     name = task['appId'][1:]
 
@@ -114,6 +115,9 @@ for task in tasks:
         else:
             finishedApps.append(namePort)
 
+        if name == 'legacy-proxy':
+            legacyBackend = namePort
+
         frontend += '  acl host_' + name + ' path_reg -i ^/' + name \
             + '($|/)\n' + '  use_backend ' + namePort + '_cluster if host_' \
             + name + '\n\n'
@@ -130,6 +134,8 @@ for task in tasks:
 
         backend += '\n'
         listen += '\n'
+
+frontend +='  default_backend ' + legacyBackend + '_cluster\n\n'
 
 config += frontend
 config += backend

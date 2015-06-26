@@ -1,0 +1,21 @@
+{
+    "id": "haproxy-public",
+    "instances": 1,
+    "cpus": 0.7,
+    "mem": 512,
+    "constraints": [
+      [
+        "hostname",
+        "CLUSTER",
+        "charlotte.1425mad.mssm.edu"
+      ]
+    ],
+    "env":{"MARATHON_MASTER": "146.203.54.165"},
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "146.203.54.165:5000/haproxy-public",
+            "network": "HOST"
+        }
+    }
+}
