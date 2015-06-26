@@ -14,8 +14,11 @@
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "146.203.54.165:5000/haproxy-public",
+            "image": "146.203.54.165:5000/haproxy-public:1.0",
             "network": "HOST"
         }
+    },
+    "upgradeStrategy": {
+      "minimumHealthCapacity": 0
     }
 }

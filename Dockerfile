@@ -8,6 +8,6 @@ COPY . /usr/local/bin
 COPY haproxy.cfg /etc/haproxy/
 EXPOSE 80
 EXPOSE 52496
-CMD /usr/local/sbin/haproxy -db -f /etc/haproxy/haproxy.cfg & \
-    /usr/local/bin/marathon-haproxy-webhook & \
-    /usr/local/bin/haproxy_reload
+CMD /usr/local/sbin/haproxy -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid && \
+    /usr/local/bin/haproxy_reload && \
+    /usr/local/bin/marathon-haproxy-webhook
