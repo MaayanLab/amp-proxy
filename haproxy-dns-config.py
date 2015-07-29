@@ -26,7 +26,7 @@ userPass = username + ':' + password
 base64string = base64.b64encode(bytes(userPass, 'utf-8'))
 if 'http://:8080' in baseUrl:
     print('Please make sure that your MARATHON_MASTER env is set properly '
-          'or that you\'re baseURL is properly formatted')
+          'or that you\'r baseURL is properly formatted')
     appUrl = 'THIS IS AN IMPROPER URL'
     baseUrl = 'THIS IS AN IMPROPER URL'
 else:
