@@ -69,6 +69,8 @@ frontend http-in
   stats uri /haproxy
   stats auth admin:admin
 
+  acl invalid_src  src  176.9.5.71
+  block if invalid_src
 '''
 
 serverDict = {}
