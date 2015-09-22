@@ -26,7 +26,7 @@ userPass = username + ':' + password
 base64string = base64.b64encode(bytes(userPass, 'utf-8'))
 if 'http://:8080' in baseUrl:
     print('Please make sure that your MARATHON_MASTER env is set properly '
-          'or that you\'re baseURL is properly formatted')
+          'or that you\'r baseURL is properly formatted')
     appUrl = 'THIS IS AN IMPROPER URL'
     baseUrl = 'THIS IS AN IMPROPER URL'
 else:
@@ -95,6 +95,7 @@ frontend = ''
 backend = ''
 listen = ''
 finishedApps = []
+legacyBackend = ''
 for task in tasks:
     name = task['appId'][1:]
 
@@ -116,6 +117,9 @@ for task in tasks:
         else:
             finishedApps.append(namePort)
 
+        if name == 'legacy-proxy':
+            legacyBackend = namePort
+
         frontend += '  acl host_' + name + ' path_reg -i ^/' + name \
             + '($|/)\n' + '  use_backend ' + namePort + '_cluster if host_' \
             + name + '\n\n'
@@ -132,6 +136,8 @@ for task in tasks:
 
         backend += '\n'
         listen += '\n'
+
+frontend +='  default_backend ' + legacyBackend + '_cluster\n\n'
 
 config += frontend
 config += backend
