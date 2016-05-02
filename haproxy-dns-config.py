@@ -20,7 +20,6 @@ args = parser.parse_args()
 baseUrl = args.baseUrl
 username = args.username
 password = args.password
-
 userPass = username + ':' + password
 
 base64string = base64.b64encode(bytes(userPass, 'utf-8'))
@@ -39,7 +38,7 @@ apps = json.loads(urlopen(appReq).read().decode('utf-8'))['apps']
 
 taskReq = Request(taskUrl)
 taskReq.add_header('Accept', 'application/json')
-taskReq.add_header('Authorization', 'Basic bWFheWFubGFiOnN5c3RlbXNiaW9sb2d5')
+taskReq.add_header('Authorization', 'Basic ' + base64string.decode('utf-8'))
 tasks = json.loads(urlopen(taskReq).read().decode('utf-8'))['tasks']
 
 config = '''
@@ -69,7 +68,8 @@ frontend http-in
   stats uri /haproxy
   stats auth admin:admin
 
-  acl invalid_src  src  176.9.5.71
+  acl invalid_src src 176.9.5.71 80.237.193.116
+  tcp-request connection reject if invalid_src
   block if invalid_src
 
 '''
