@@ -28,8 +28,10 @@ def index():
     """Updates the HAProxy config and reloads HAProxy if needed.
     """
     if request.method == 'POST':
+        logging.info('POST request from Marathon...')
         json = request.get_json(force=True)
         if _task_has_updated(json):
+            logging.info('Restarting HAProxy...')
             haproxy.reload()
         return 'Success'
     else:
