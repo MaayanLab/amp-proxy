@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-img=maayanlab/marathon-haproxy-webhook
+img=maayanlab/maayanlab-haproxy
 
-docker build -t $img .
+docker build --no-cache -t $img .
 docker push $img
