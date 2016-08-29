@@ -29,8 +29,8 @@ There are two files that are not version controlled because they contain sensiti
 ```
 [marathon]
 url = <MARATHON_MASTER>
-username = <MARATHON_UI_USERNAME>
-password = <MARATHON_UI_PASSWORD>
+username = <MARATHON_USERNAME>
+password = <MARATHON_PASSWORD>
 ```
 
 This second file is appended to the existing hosts file inside the Docker container. This allows HAProxy to find the machines based on their names, as provided by the Marathon API:
