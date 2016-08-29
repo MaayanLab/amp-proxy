@@ -14,7 +14,7 @@ There is not much a developer must know about the HAProxy component. The `Docker
 
 ### Marathon-HAProxy webhook
 
-This component is responsible for responding to Marathon updates, rebuilding the configuration file, and then restarting HAProxy. It runs in the same Docker container as HAProxy so that it can easily reconfigure and restart the proxy server. This application listens on port `52496`, which is not exposed. **_Do not confuse HAProxy with the Marathon-HAProxy web hook. They are two separate servers. HAProxy listens on port 80. The Marathon-HAProxy webhook listens on port 52496._**
+This component is responsible for responding to Marathon updates, rebuilding the configuration file, and then restarting HAProxy. It runs in the same Docker container as HAProxy so that it can easily reconfigure and restart the proxy server. This application listens on port `52496`, which is not exposed. **_Do not confuse HAProxy with the Marathon-HAProxy webhook. They are two separate servers. HAProxy listens on port 80. The Marathon-HAProxy webhook listens on port 52496._**
 
 To see the current HAPRoxy configuration, go to: [http://charlotte:52496/marathon-haproxy-webhook](http://charlotte:52496/marathon-haproxy-webhook). This GET request should only work if you have the correct hosts file mapping for `charlotte`.
 
