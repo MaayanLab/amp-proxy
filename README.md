@@ -18,7 +18,7 @@ This component is responsible for responding to Marathon updates, rebuilding the
 
 To see the current HAPRoxy configuration, go to: [http://charlotte:52496/marathon-haproxy-webhook](http://charlotte:52496/marathon-haproxy-webhook). This GET request should only work if you have the correct hosts file mapping for `charlotte`.
 
-Importantly, we use the [Marathon Event Bus](https://mesosphere.github.io/marathon/docs/event-bus.html). Marathon allows developers to register a callback endpoint to which Marathon will POST events in JSON format. To see the list of currently registered callbacks, go to: [http://<MARATHON_MASTER>:8080/v2/eventSubscriptions](http://elizabeth:8080/v2/eventSubscriptions). To register a new callback, see the `eventSubscriptions` endpoint in the [Marathon API documentation](https://mesosphere.github.io/marathon/docs/generated/api.html).
+Importantly, we use the [Marathon Event Bus](https://mesosphere.github.io/marathon/docs/event-bus.html). Marathon allows developers to register a callback endpoint to which Marathon will POST events in JSON format. To see the list of currently registered callbacks, go to: [http://elizabeth:8080/v2/eventSubscriptions](http://elizabeth:8080/v2/eventSubscriptions). To register a new callback, see the `eventSubscriptions` endpoint in the [Marathon API documentation](https://mesosphere.github.io/marathon/docs/generated/api.html).
 
 ### Required files
 
@@ -28,7 +28,7 @@ There are two files that are not version controlled because they contain sensiti
 
 ```
 [marathon]
-url = <MARATHON_MASTER>
+url = http://elizabeth:8080
 username = <MARATHON_USERNAME>
 password = <MARATHON_PASSWORD>
 ```
