@@ -1,4 +1,4 @@
-"""
+"""Handles configuring and restarting HAPRoxy.
 """
 
 import requests
@@ -13,7 +13,7 @@ INDENT = '    '
 
 
 def reload():
-    """
+    """Rebuilds HAProxy configuration file and restarts HAProxy.
     """
     config = _build_config()
     _write_config(config)
@@ -21,7 +21,8 @@ def reload():
 
 
 def config():
-    """
+    """Returns HAProxy's configuration file. Throws a FileNotFoundError if the
+    file does not exist.
     """
     try:
         f = open(HA_CONFIG_PATH, 'r')
@@ -33,7 +34,7 @@ def config():
 
 
 def _restart():
-    """
+    """Restarts HAPRoxy.
     """
     CMD = '/usr/local/sbin/haproxy -D ' \
           '-f %s ' \
@@ -42,18 +43,16 @@ def _restart():
     os.system(CMD)
 
 
-def _write_config(config):
-    """
+def _write_config(config_contents):
+    """Writes contents to HAPRoxy configuration file.
     """
     with open(HA_CONFIG_PATH, 'w+') as f:
-        f.write(config)
+        f.write(config_contents)
 
 
 def _build_config():
+    """Builds the contents for the HAPRoxy configuration file.
     """
-    """
-    global MARATHON_URL
-
     apps_url = '%s/v2/apps' % MARATHON_URL
     auth = HTTPBasicAuth(MARATHON_USER, MARATHON_PASSWORD)
     apps = requests.get(apps_url, auth=auth).json()['apps']
@@ -86,7 +85,6 @@ def _build_config():
             else:
                 servers[key] = [server]
 
-
     frontend = ''
     backend = ''
     listen = ''
@@ -109,8 +107,7 @@ def _build_config():
         service_ports = task['servicePorts']
 
         for port in service_ports:
-            name_port = name + '-' + str(port)
-            # Prevent duplicates
+            name_port = '%s-%s' % (name, port)
             if name_port in finished_apps:
                 continue
             else:
@@ -170,7 +167,15 @@ frontend http-in
 
 
 def _frontend(name_port, name):
-    """
+    """Builds "frontend" sections. From the documentation:
+
+        "A 'frontend' section describes a set of listening sockets accepting
+        client connections."
+
+    Example:
+
+        acl host_<APP_NAME> path_reg -i ^/<APP_NAME> ($|/)
+        use_backend <APP_SERVER> if host_<APP_NAME>
     """
     s = '%sacl host_%s path_reg -i ^/%s ($|/)\n' \
         '%suse_backend %s_cluster if host_%s\n\n' % (
@@ -179,7 +184,18 @@ def _frontend(name_port, name):
 
 
 def _backend(name_port):
-    """
+    """Builds "backend" sections. From the documentation:
+
+        "A 'backend' section describes a set of servers to which the proxy
+        will connect to forward incoming connections."
+
+    Example:
+
+        backend <APP_SERVER>
+            option forwardfor
+            mode http
+            balance leastconn
+            server <APP_NAME>-<INDEX> <MACHINE>:<PORT>
     """
     s = 'backend %s_cluster\n' \
         '%soption forwardfor\n' \
@@ -190,7 +206,20 @@ def _backend(name_port):
 
 
 def _listen(name_port, port):
-    """
+    """Builds "backend" sections. From the documentation:
+
+        "A 'listen' section defines a complete proxy with its frontend and
+        backend parts combined in one section. It is generally useful
+        for TCP-only traffic."
+
+    Example:
+
+        listen <APP_NAME>-<PORT>
+            bind 0.0.0.0:<PORT>
+            mode tcp
+            option tcplog
+            balance leastconn
+            server baylor-0 <MACHINE>:<PORT>
     """
     s = 'listen %s\n' \
         '%sbind 0.0.0.0:%s\n' \
