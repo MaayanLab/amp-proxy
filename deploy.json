@@ -4,12 +4,12 @@
   "cpus": 0.7,
   "mem": 512,
   "disk": 256,
-  "instances": 0,
+  "instances": 1,
   "constraints": [
     [
       "hostname",
       "CLUSTER",
-      "charlotte.1425mad.mssm.edu"
+      "yan.1425mad.mssm.edu"
     ]
   ],
   "container": {
@@ -22,9 +22,6 @@
       "parameters": [],
       "forcePullImage": false
     }
-  },
-  "env": {
-    "MARATHON_MASTER": "146.203.54.165"
   },
   "portDefinitions": [
     {

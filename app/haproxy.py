@@ -10,6 +10,7 @@ from .config import MARATHON_URL, MARATHON_USER, MARATHON_PASSWORD
 
 HA_CONFIG_PATH = '/usr/local/etc/haproxy/haproxy.cfg'
 INDENT = '    '
+ERROR_MSG = 'haproxy.cfg does not exist. Are you developing locally?'
 
 
 def reload():
@@ -29,7 +30,7 @@ def config():
         s = f.read()
         f.close()
     except FileNotFoundError:
-        s = 'haproxy.cfg does not exist. Are you developing locally?'
+        raise FileNotFoundError(ERROR_MSG)
     return s
 
 
@@ -46,8 +47,11 @@ def _restart():
 def _write_config(config_contents):
     """Writes contents to HAPRoxy configuration file.
     """
-    with open(HA_CONFIG_PATH, 'w+') as f:
-        f.write(config_contents)
+    try:
+        with open(HA_CONFIG_PATH, 'w+') as f:
+            f.write(config_contents)
+    except FileNotFoundError:
+        raise FileNotFoundError(ERROR_MSG)
 
 
 def _build_config():
@@ -177,7 +181,7 @@ def _frontend(name_port, name):
         acl host_<APP_NAME> path_reg -i ^/<APP_NAME> ($|/)
         use_backend <APP_SERVER> if host_<APP_NAME>
     """
-    s = '%sacl host_%s path_reg -i ^/%s ($|/)\n' \
+    s = '%sacl host_%s path_reg -i ^/%s($|/)\n' \
         '%suse_backend %s_cluster if host_%s\n\n' % (
             INDENT, name, name, INDENT, name_port, name)
     return s

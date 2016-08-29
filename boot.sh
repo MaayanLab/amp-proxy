@@ -1,104 +1,21 @@
 #!/usr/bin/env bash
 
 root=/app
-user=r
 log=$root/error.log
-applog=$root/production.log
-haconfig=/usr/local/etc/haproxy/haproxy.cfg
-
-function setup {
-
-echo "Creating user..." >> $log
-adduser --disabled-password --gecos '' $user >> $log
-
-echo "Configuring permissions..."
-chown $user $haconfig
-touch $applog
-chown $user $applog
 
 echo "Creating hosts file..."
 cat $root/hosts >> /etc/hosts
 rm $root/hosts
 
-echo "Writing wsgi.ini..." >> $log
-cat << EOF | tee -a $root/wsgi.ini >> $log
-[uwsgi]
-uid = $user
-gid = $user
+echo "Starting webhook server..."
+python3 $root/run.py
 
-master = true
-processes = 5
-
-chdir = $root
-wsgi-file = $root/wsgi.py
-
-socket = 127.0.0.1:8080
-daemonize = $log
-EOF
-
-echo "Writing nginx.conf..." >> $log
-cat << EOF | tee -a $root/nginx.conf >> $log
-user $user $user;
-
-worker_processes 1;
-
-events {
-    worker_connections 1024;
-}
-
-http {
-    access_log $log;
-    error_log $log;
-
-    gzip              on;
-    gzip_http_version 1.0;
-    gzip_proxied      any;
-    gzip_min_length   500;
-    gzip_disable      "MSIE [1-6]\.";
-    gzip_types        text/plain text/xml text/css
-                      text/comma-separated-values
-                      text/javascript
-                      application/x-javascript
-                      application/atom+xml;
-
-    server {
-        listen 80;
-        charset utf-8;
-        client_max_body_size 20M;
-        sendfile on;
-        keepalive_timeout 0;
-        large_client_header_buffers 8 32k;
-
-        location /static  {
-            alias $root/app/static;
-        }
-
-        location / {
-            include            /etc/nginx/uwsgi_params;
-            uwsgi_pass         127.0.0.1:8080;
-            proxy_redirect     off;
-            proxy_set_header   Host \$host;
-            proxy_set_header   X-Real-IP \$remote_addr;
-            proxy_set_header   X-Forwarded-For \$proxy_add_x_forwarded_for;
-            proxy_set_header   X-Forwarded-Host \$server_name;
-        }
-    }
-}
-EOF
-
-echo "Starting uwsgi..." >> $log
-uwsgi --ini $root/wsgi.ini >> $log
-
-echo "Starting nginx..." >> $log
-nginx -c $root/nginx.conf >> $log
-
-}
+echo "Starting HAProxy..."
+/usr/local/sbin/haproxy -D -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)
 
 if [ -f $log ]; then
     rm $log;
 fi
 
 echo "Booting..." > $log
-setup &
-
 tail -f $log

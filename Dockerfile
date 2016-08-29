@@ -15,6 +15,9 @@ RUN pip3 install -Iv Flask==0.11 \
     requests==2.6.0 \
     uwsgi
 
+# HAProxy webhook.
+EXPOSE 52496
+# All other incoming requests.
 EXPOSE 80
 
 ADD . /app
