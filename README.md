@@ -1,4 +1,3 @@
-# marathon-ha-proxy
-A dynamic haproxy config generator using Marathon's REST API
+# Marathon HAProxy webhook
 
-This is the setup for a docker container that will host any application on marathon with the tags `"public": "true"`, otherwise, they will run on Marathon but not be available publicly.
+A dynamic [HAProxy](http://www.haproxy.org/) config generator using the [Marathon](https://mesosphere.github.io/marathon/) API.

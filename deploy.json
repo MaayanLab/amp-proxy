@@ -10,11 +10,10 @@
         "charlotte.1425mad.mssm.edu"
       ]
     ],
-    "env":{"MARATHON_MASTER": "146.203.54.165"},
     "container": {
         "type": "DOCKER",
         "docker": {
-            "image": "146.203.54.165:5000/haproxy-public:1.5",
+            "image": "maayanlab/haproxy-public",
             "network": "HOST"
         }
     },
