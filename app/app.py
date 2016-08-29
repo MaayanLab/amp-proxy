@@ -12,12 +12,14 @@ templates_dir = '%s/templates' % ROOT_DIR
 app = Flask(PATH, static_url_path='', template_folder=templates_dir)
 
 
-# logging.basicConfig(filename='%s/production.log' % ROOT_DIR,
-#                     filemode='a',
-#                     level=logging.DEBUG)
-# logger = logging.getLogger()
+logging.basicConfig(filename='%s/production.log' % ROOT_DIR,
+                    filemode='a',
+                    maxBytes=128,
+                    level=logging.DEBUG)
+logger = logging.getLogger()
 
 # CRITICAL: When HAProxy first starts, we need it to build its config.
+print('Starting HAProxy...')
 haproxy.reload()
 
 
@@ -26,7 +28,6 @@ def index():
     """Updates the HAProxy config and reloads HAProxy if needed.
     """
     if request.method == 'POST':
-        #logger.info('Marathon callback URL to update haproxy.cfg.')
         json = request.get_json(force=True)
         if _task_has_updated(json):
             haproxy.reload()

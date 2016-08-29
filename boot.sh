@@ -10,8 +10,7 @@ rm $root/hosts
 echo "Starting webhook server..."
 python3 $root/run.py
 
-echo "Starting HAProxy..."
-/usr/local/sbin/haproxy -D -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)
+# HAProxy is started by the Python application.
 
 if [ -f $log ]; then
     rm $log;

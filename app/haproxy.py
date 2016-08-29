@@ -161,7 +161,7 @@ frontend http-in
 
     acl invalid_src src 176.9.5.71 80.237.193.116
     tcp-request connection reject if invalid_src
-    block if invalid_src\n\n'''
+    http-request deny if invalid_src\n\n'''
 
     ha_config += frontend
     ha_config += backend
