@@ -13,6 +13,7 @@ adduser --disabled-password --gecos '' $user >> $log
 
 echo "Configuring permissions..."
 chown $user $haconfig
+touch $applog
 chown $user $applog
 
 echo "Creating hosts file..."
