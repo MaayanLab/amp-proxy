@@ -3,6 +3,11 @@
 root=/app
 log=$root/error.log
 
+# If we do not set the TERM variable, the command prompt will not allow us to
+# use commands like `clear`. I'm not sure why.
+echo "Setting TERM environment variable..."
+export TERM=xterm
+
 echo "Creating hosts file..."
 cat $root/hosts >> /etc/hosts
 rm $root/hosts
