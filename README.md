@@ -12,6 +12,8 @@ This project has two main components:
 
 There is not much a developer must know about the HAProxy component. The `Dockerfile` uses the latest HAProxy image, and we start HAProxy using MHW. Specifically, in the `haproxy` module, there is a function called `reload` that handles building the HAProxy configuration file and then starting HAProxy. This application must run port `80` on `charlotte`.
 
+HAProxy also handles redirects for URLs and applications that are not on Marathon. Use [`redirects.py`](https://github.com/MaayanLab/maayanlab-haproxy/blob/master/app/redirects.py) to configure a new 301 redirect.
+
 ### Marathon-HAProxy webhook
 
 This component is responsible for responding to Marathon updates, rebuilding the configuration file, and then restarting HAProxy. It runs in the same Docker container as HAProxy so that it can easily reconfigure and restart the proxy server. This application listens on port `52496`, which is not exposed. **_Do not confuse HAProxy with the Marathon-HAProxy webhook. They are two separate servers. HAProxy listens on port 80. The Marathon-HAProxy webhook listens on port 52496._**
