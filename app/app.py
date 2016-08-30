@@ -45,6 +45,9 @@ def _task_has_updated(json):
     """Returns true if Marathon's API indicates a task has changed, False
     otherwise.
     """
+    # This line is for debugging purposes. I can't find any good documentation
+    # on what this JSON should look like.
+    logger.info(json)
     is_status_update = json.get('eventType') == 'status_update_event'
     STATUSES = ['TASK_RUNNING', 'TASK_FAILED', 'TASK_KILLED', 'TASK_LOST']
     is_task_update = json.get('taskStatus') in STATUSES
