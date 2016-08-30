@@ -31,7 +31,7 @@ You can deploy any application you'd like on Marathon, but it will not automatic
 ```json
 ...
 "labels": {
-  "public": "true"
+    "public": "true"
 },
 ...
 ```
