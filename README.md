@@ -26,7 +26,7 @@ Importantly, we use the [Marathon Event Bus](https://mesosphere.github.io/marath
 
 #### Public label
 
-You can deploy any application you'd like on Marathon, but it will not automatically be exposed on `http://amp.pharm.mssm.edu/`. In order to do this, we use Marathon [`labels`](https://mesosphere.github.io/marathon/docs/rest-api.html). To add a label, just use the `labels` hash in the configuration JSON:
+You can deploy any application you'd like on Marathon, but it will not automatically be exposed on `http://amp.pharm.mssm.edu/`. To disambiguate private- versus public-facing applications, we use Marathon [`labels`](https://mesosphere.github.io/marathon/docs/rest-api.html). To add a label, just use the `labels` hash in the configuration JSON:
 
 ```json
     ...
