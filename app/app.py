@@ -2,7 +2,7 @@
 """
 
 from flask import Flask, request, render_template
-from . import haproxy
+from . import haproxy, db
 from .config import ROOT_DIR
 import logging
 
@@ -36,7 +36,9 @@ def index():
         return 'Success'
     else:
         ha_config = haproxy.config()
-        return render_template('ha-config.html', ha_config=ha_config)
+        time = db.get_time()
+        return render_template('ha-config.html', ha_config=ha_config,
+                               time=time)
 
 
 def _task_has_updated(json):

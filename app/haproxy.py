@@ -3,6 +3,7 @@
 
 import requests
 from requests.auth import HTTPBasicAuth
+from . import db
 import os
 
 from .config import MARATHON_URL, MARATHON_USER, MARATHON_PASSWORD
@@ -19,6 +20,7 @@ def reload():
     config = _build_config()
     _write_config(config)
     _restart()
+    db.record_time()
 
 
 def config():
