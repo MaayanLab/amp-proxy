@@ -250,7 +250,12 @@ def _listen(name_port, port):
 
 
 def _redirects():
-    """
+    """Builds "redirect" section. Redirects are specified in `redirect.py`.
+
+    Example:
+
+        acl is_redirect0 path -i /
+        redirect code 301 location http://labs.icahn.mssm.edu/maayanlab/ if is_redirect0
     """
     results = ''
     for i, r in enumerate(REDIRECTS):
@@ -260,45 +265,3 @@ def _redirects():
                 INDENT, predict, r['from'], INDENT, r['to'], predict)
         results += s
     return results
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
