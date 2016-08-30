@@ -20,11 +20,11 @@ This component is responsible for responding to Marathon updates, rebuilding the
 
 To see the current HAPRoxy configuration, go to: [http://charlotte:52496/marathon-haproxy-webhook](http://charlotte:52496/marathon-haproxy-webhook). This GET request should only work if you have the correct hosts file mapping for `charlotte`.
 
-##### Marathon events API
+#### Marathon events API
 
 Importantly, we use the [Marathon Event Bus](https://mesosphere.github.io/marathon/docs/event-bus.html). Marathon allows developers to register a callback endpoint to which Marathon will POST events in JSON format. To see the list of currently registered callbacks, go to: [http://elizabeth:8080/v2/eventSubscriptions](http://elizabeth:8080/v2/eventSubscriptions). To register a new callback, see the `eventSubscriptions` endpoint in the [Marathon API documentation](https://mesosphere.github.io/marathon/docs/generated/api.html).
 
-##### Public label
+#### Public label
 
 You can deploy any application you'd like on Marathon, but it will not automatically be exposed on `http://amp.pharm.mssm.edu/`. In order to do this, we use Marathon [`labels`](https://mesosphere.github.io/marathon/docs/rest-api.html). To add a label, just use the `labels` hash in the configuration JSON:
 
