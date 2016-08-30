@@ -4,6 +4,7 @@
 import requests
 from requests.auth import HTTPBasicAuth
 from . import db
+from .redirects import REDIRECTS
 import os
 
 from .config import MARATHON_URL, MARATHON_USER, MARATHON_PASSWORD
@@ -137,6 +138,8 @@ def _build_config():
         frontend += '%sdefault_backend %s_cluster\n\n' % (
             INDENT, legacy_backend)
 
+    redirect = _redirects()
+
     ha_config = '''global
     daemon
     log 127.0.0.1 local0
@@ -165,8 +168,18 @@ frontend http-in
     tcp-request connection reject if invalid_src
     http-request deny if invalid_src\n\n'''
 
+    line = '\n# %s\n# ' + ('=' * 78) + '\n'
+
+    ha_config += line % 'REDIRECTS'
+    ha_config += redirect
+
+    ha_config += line % 'FRONTEND'
     ha_config += frontend
+
+    ha_config += line % 'BACKEND'
     ha_config += backend
+
+    ha_config += line % 'LISTEN'
     ha_config += listen
 
     return ha_config
@@ -234,3 +247,58 @@ def _listen(name_port, port):
         '%sbalance leastconn\n' % (
             name_port, INDENT, port, INDENT, INDENT, INDENT)
     return s
+
+
+def _redirects():
+    """
+    """
+    results = ''
+    for i, r in enumerate(REDIRECTS):
+        predict = 'is_redirect%s' % i
+        s = '%sacl %s path -i %s\n' \
+            '%sredirect code 301 location %s if %s\n\n' % (
+                INDENT, predict, r['from'], INDENT, r['to'], predict)
+        results += s
+    return results
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
