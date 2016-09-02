@@ -8,10 +8,6 @@ REDIRECTS = [
         'to': 'http://labs.icahn.mssm.edu/maayanlab/'
     },
     {
-        'from': '/creeds',
-        'to': 'http://amp.pharm.mssm.edu/CREEDS'
-    },
-    {
         'from': '/l1kdownload/',
         'to': 'http://10.91.53.225/CD/'
     },
