@@ -66,5 +66,9 @@ REDIRECTS = [
     {
         'from': '/ESCAPE',
         'to': 'http://vn1.pharm.mssm.edu/ESCAPE'
+    },
+    {
+        'from': '/lib/chea.jsp',
+        'to': 'http://amp.pharm.mssm.edu/ChEA2/'
     }
 ]
