@@ -70,5 +70,9 @@ REDIRECTS = [
     {
         'from': '/lib/chea.jsp',
         'to': 'http://amp.pharm.mssm.edu/ChEA2/'
+    },
+    {
+        'from': '/lib/kea.jsp',
+        'to': 'http://www.maayanlab.net/KEA2/'
     }
 ]
