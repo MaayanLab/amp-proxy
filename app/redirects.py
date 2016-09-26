@@ -74,5 +74,9 @@ REDIRECTS = [
     {
         'from': '/lib/kea.jsp',
         'to': 'http://www.maayanlab.net/KEA2/'
+    },
+    {
+        'from': '/baylor',
+        'to': 'http://amp.pharm.mssm.edu/bcm-idg/'
     }
 ]
